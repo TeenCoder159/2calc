@@ -48,15 +48,10 @@ impl Expression {
 
         for element in filtered {
             if element.contains("x") {
-                let (_, index_str) = match element.split_once('^') {
-                    Some(a) => a,
-                    None => ("", "1"),
-                };
+                let (_, index_str) = element.split_once('^').unwrap_or(("", "1"));
                 if index_str.contains(".") {
                     eprintln!("ERROR: FLOATING POINT AS INDEX ISN'T SUPPORTED ");
-                    return Err(Box::new(InvalidExpression(format!(
-                        "FLOATING POINT IN INDEX ISNT SUPPORTED"
-                    ))));
+                    return Err(Box::new(InvalidExpression("FLOATING POINT IN INDEX ISNT SUPPORTED".to_string())));
                 }
                 let index = index_str.parse().expect("Error parsing expression");
 
@@ -64,15 +59,9 @@ impl Expression {
                     degree = index
                 }
 
-                let (coefficient_str, _) = match element.split_once('x') {
-                    Some(a) => a,
-                    None => ("0", ""),
-                };
+                let (coefficient_str, _) = element.split_once('x').unwrap_or(("0", ""));
 
-                let coefficient = match coefficient_str.parse() {
-                    Ok(a) => a,
-                    Err(_) => 1,
-                };
+                let coefficient = coefficient_str.parse().unwrap_or(1);
 
                 terms.push(Term::new(coefficient, index));
             }
