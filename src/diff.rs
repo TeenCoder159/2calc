@@ -9,7 +9,7 @@ impl Differentiatable for Expression {
         let mut answer: Vec<String> = Vec::new();
 
         for term in self.terms.clone() {
-            let mut index: &str = &format!("x^{}", term.index);
+            let mut index: &str = &format!("x^{}", term.index - 1);
 
             if term.index_mult_coeff() != 0 {
                 index = match term.index - 1 {
